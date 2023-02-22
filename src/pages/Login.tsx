@@ -53,7 +53,7 @@ export const H2 = styled.h2`
 `;
 
 export const H3 = styled.h3`
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   text-align: center;
   ${({ theme }) => theme.fonts.body2}
   color: ${({ theme }) => theme.colors.gray300};

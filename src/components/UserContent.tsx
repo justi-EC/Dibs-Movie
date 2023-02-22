@@ -1,34 +1,32 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { UserInfo } from "../pages/MyPage";
-import { isLoginState } from "../utils/atom";
+import { isLoginState, userDataState } from "../utils/atom";
+import TopBanner from "./TopBanner";
 import { Button } from "./styled/Button";
 import { useLogout } from "../hooks/useLogout";
 
-interface Props {
-  userInfo: UserInfo;
-}
-
-const UserContent = ({ userInfo }: Props) => {
+const UserContent = () => {
   const { error, isPending, logout } = useLogout();
   const navigate = useNavigate();
   const isLogin = useRecoilValue(isLoginState);
+  const resetUserData = useResetRecoilState(userDataState);
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    resetUserData();
   };
 
   return (
     <Wrapper>
+      <TopBanner />
       {isLogin ? (
         <LogoutBtn onClick={handleLogout} id="btn_logout">
           로그아웃
         </LogoutBtn>
       ) : (
-        <LoginBtn type="button">
-          <Link to="/login">로그인</Link>
+        <LoginBtn type="button" onClick={() => navigate("/login")}>
+          로그인
         </LoginBtn>
       )}
     </Wrapper>

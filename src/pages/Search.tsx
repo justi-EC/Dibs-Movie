@@ -1,0 +1,110 @@
+import CommonLayout from "../components/CommonLayout";
+import MainHeader from "../components/MainHeader";
+import styled, { css } from "styled-components";
+import { useDebounce } from "../hooks/useDebounce";
+import { ImCancelCircle } from "react-icons/im";
+import { useEffect, useState } from "react";
+import { getSearchMovies } from "../utils/api";
+import { IGetContentsResult } from "../utils/Types";
+import SearchMovieList from "../components/SearchMovieList";
+
+const Search = () => {
+  const { query, debounceQuery, setDebounceQuery } = useDebounce<string>("");
+  const [searchResults, setSearchResults] = useState<IGetContentsResult>();
+  let currentPage = 1;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value;
+    handleDebounceQuery(text);
+  };
+
+  const handleDebounceQuery = (tempQuery: string) => {
+    setDebounceQuery(tempQuery);
+  };
+
+  const handleCancel = () => {
+    handleDebounceQuery("");
+  };
+
+  const handleSearchMovie = async (query: string) => {
+    const data = await getSearchMovies(query, currentPage);
+    setSearchResults(data);
+  };
+
+  useEffect(() => {
+    if (query.length > 0) {
+      handleSearchMovie(query);
+    }
+  }, [query]);
+
+  return (
+    <CommonLayout>
+      <MainHeader>영화 검색</MainHeader>
+      <Wrapper>
+        <SearchBarWrapper isqueryempty={debounceQuery}>
+          <InputSearch
+            onChange={handleChange}
+            type="text"
+            value={debounceQuery}
+            id="addBookSearch"
+            placeholder="영화 제목을 검색하세요."
+          />
+          <Cancel
+            onClick={handleCancel}
+            isqueryempty={debounceQuery}
+            size={50}
+          />
+        </SearchBarWrapper>
+        {debounceQuery && searchResults && (
+          <SearchMovieList searchMovies={searchResults} />
+        )}
+      </Wrapper>
+    </CommonLayout>
+  );
+};
+
+export default Search;
+
+const Wrapper = styled.section`
+  padding-top: 3rem;
+`;
+
+const SearchBarWrapper = styled.div<{ isqueryempty: string }>`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.2rem solid ${({ theme }) => theme.colors.white200};
+  margin: 0 4rem;
+  border-radius: 1rem;
+  background-color: ${({ theme }) => theme.colors.white200};
+  height: 6rem;
+  ${({ isqueryempty }) =>
+    isqueryempty === ""
+      ? css`
+          border: 0.2rem solid ${({ theme }) => theme.colors.white200};
+        `
+      : css`
+          border: 0.2rem solid ${({ theme }) => theme.colors.gray100};
+        `}
+`;
+
+const InputSearch = styled.input`
+  width: 100%;
+  padding-left: 3rem;
+  background-color: ${({ theme }) => theme.colors.white200};
+  ${({ theme }) => theme.fonts.body3}
+  color: ${({ theme }) => theme.colors.gray100};
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.gray400};
+  }
+`;
+
+const Cancel = styled(ImCancelCircle)<{ isqueryempty: string }>`
+  margin-right: 2rem;
+  color: ${({ theme }) => theme.colors.gray400};
+  ${({ isqueryempty }) => (isqueryempty === "" ? "display: none;" : "")}
+  &:hover {
+    cursor: pointer;
+  }
+`;

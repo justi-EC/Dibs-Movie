@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { Timestamp, getFirestore } from "firebase/firestore";
 
 const {
   VITE_FIREBASE_API_KEY,
@@ -23,5 +23,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const appFireStore = getFirestore(app);
 const appAuth = getAuth();
+const timeStamp = Timestamp;
 
-export { app, appFireStore, appAuth };
+export { app, appFireStore, appAuth, timeStamp };

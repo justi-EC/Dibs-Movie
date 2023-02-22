@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Article, H2, H3, MainWrapper, StContact, Wrapper } from "./Login";
-import SignUpForm from "../components/styled/SignUpForm";
+import SignUpForm from "../components/SignUpForm";
 
 const SignUp = () => {
   const navigate = useNavigate();

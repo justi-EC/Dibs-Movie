@@ -1,26 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { getTrendingContents } from "../utils/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper";
-import { IContent, IGetContentsResult } from "../utils/Types";
+import { TrendingContentType, IGetContentsResult } from "../utils/Types";
 import Content from "./styled/Content";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { trendingMovieDataState } from "../utils/atom";
+import { getTrendingContents } from "../utils/api";
 
 const TrendMovies = () => {
-  const [trendingMovieData, setTrendingMovieData] = useState<IContent[] | null>(
-    null
+  const [trendingMovieData, setTrendingMovieData] = useRecoilState(
+    trendingMovieDataState
   );
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const data: IGetContentsResult = await getTrendingContents();
-        const results: IContent[] = data.results;
+        const results: TrendingContentType[] = data.results;
         setTrendingMovieData(results);
       } catch (error) {
         console.error(error);
@@ -43,7 +45,7 @@ const TrendMovies = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000 }}>
             {trendingMovieData &&
-              trendingMovieData.map((content: IContent) => {
+              trendingMovieData.map((content: TrendingContentType) => {
                 return (
                   <SwiperSlide key={content.id}>
                     <Content content={content} />
@@ -77,9 +79,8 @@ const MainLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  width: 8.8rem;
-  height: 3.6rem;
+  width: 9rem;
+  height: 3rem;
 
   border: 0.2rem solid ${({ theme }) => theme.colors.gray300};
   border-radius: 2.4rem;

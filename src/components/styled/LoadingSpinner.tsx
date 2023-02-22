@@ -6,7 +6,7 @@ const LoadingSpinner = () => {
 
 export default LoadingSpinner;
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

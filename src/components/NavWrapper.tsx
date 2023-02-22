@@ -10,13 +10,13 @@ const NavWrapper = () => {
             <Link to="/">홈</Link>
           </Item>
           <Item>
-            <Link to="">목록</Link>
+            <Link to="/search">검색</Link>
+          </Item>
+          <Item>
+            <Link to="/dibs"> 찜 목록</Link>
           </Item>
           <Item>
             <Link to="/mypage">마이페이지</Link>
-          </Item>
-          <Item>
-            <Link to="">준비중</Link>
           </Item>
         </Ul>
       </Nav>

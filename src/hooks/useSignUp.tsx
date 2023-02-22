@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { appAuth } from "../firebase/config";
+import { appAuth, appFireStore } from "../firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 import { UserData } from "../components/LoginForm";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +14,6 @@ export const useSignup = () => {
     const { email, password, displayName } = signUpFormData;
     setError(null);
     setIsPending(true);
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         appAuth,
@@ -24,9 +24,13 @@ export const useSignup = () => {
       if (!user) {
         throw new Error("회원가입에 실패했습니다.");
       }
-      if (appAuth.currentUser) {
-        await updateProfile(appAuth.currentUser, { displayName });
-      }
+      await updateProfile(userCredential.user, { displayName });
+      await setDoc(doc(appFireStore, "Users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        dibsIdList: [],
+      });
       navigate("/signupsuccess");
       setError(null);
       setIsPending(false);

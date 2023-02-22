@@ -4,14 +4,14 @@ import {
   emailErrorPatterns,
   nicknameErrorPatterns,
   passwordErrorPatterns,
-} from "../../utils/check";
-import { Input } from "./Input";
-import AlertLabel from "./AlertLabel";
-import { Button } from "./Button";
-import { UserData } from "../LoginForm";
-import { useSignup } from "../../hooks/useSignUp";
+} from "../utils/check";
+import { Input } from "./styled/Input";
+import AlertLabel from "./styled/AlertLabel";
+import { Button } from "./styled/Button";
+import { UserData } from "./LoginForm";
+import { useSignup } from "../hooks/useSignUp";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./styled/LoadingSpinner";
 
 const SignUpForm = () => {
   const { error, isPending, signup } = useSignup();
@@ -26,7 +26,7 @@ const SignUpForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      text: "",
+      displayName: "",
     },
   });
 
@@ -60,12 +60,14 @@ const SignUpForm = () => {
       )}
       <Label htmlFor="loginPwd">이름</Label>
       <Input
-        {...register("text", nicknameErrorPatterns)}
+        {...register("displayName", nicknameErrorPatterns)}
         placeholder="이름을 입력하세요."
-        type="text"
+        type="displayName"
       />
 
-      {errors.text?.message && <AlertLabel message={errors.text.message} />}
+      {errors.displayName?.message && (
+        <AlertLabel message={errors.displayName.message} />
+      )}
       {isPending ? (
         <LoadingSpinner />
       ) : (

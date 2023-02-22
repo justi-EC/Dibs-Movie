@@ -12,7 +12,7 @@ const MainHeader = ({ children }: Props) => {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(isLoginState);
   const location = useLocation();
-  const isMyPage = location.pathname === "/mypage";
+  const isMyPage = location.pathname === "/";
 
   return (
     <Header>
@@ -21,7 +21,7 @@ const MainHeader = ({ children }: Props) => {
         <></>
       ) : (
         <>
-          {!isMyPage && (
+          {isMyPage && (
             <BtnWrapper>
               <LoginBtn onClick={() => navigate("/login")}>로그인</LoginBtn>
               <SignupBtn type="button" onClick={() => navigate("/signup")}>
@@ -45,7 +45,7 @@ const Header = styled.header`
 `;
 
 const Head = styled.h2`
-  ${({ theme }) => theme.fonts.header0};
+  ${({ theme }) => theme.fonts.header1};
 `;
 
 const BtnWrapper = styled.div`

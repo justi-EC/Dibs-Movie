@@ -17,6 +17,7 @@ const colors = {
   white400: "#DFDFDF",
   white500: "#C1C1C1",
   red100: "#CE2525",
+  green100: "#3CA06C",
 };
 
 interface Font {

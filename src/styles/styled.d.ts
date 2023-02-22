@@ -19,6 +19,7 @@ declare module "styled-components" {
       white400: string;
       white500: string;
       red100: string;
+      green100: string;
     };
     fonts: {
       h1: SerializedStyles;
