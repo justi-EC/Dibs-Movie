@@ -1,16 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { isLoginState, userDataState } from "../utils/atom";
+import { isLoginState, loadingState, userDataState } from "../../utils/atom";
 import TopBanner from "./TopBanner";
-import { Button } from "./styled/Button";
-import { useLogout } from "../hooks/useLogout";
+import { Button } from "../styled/Button";
+import { useLogout } from "../../hooks/useLogout";
+import LoadingSpinner from "../styled/LoadingSpinner";
 
-const UserContent = () => {
+interface Props {
+  changeImg: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  deleteImg: () => Promise<void>;
+}
+
+const UserContent = ({ changeImg, deleteImg }: Props) => {
   const { error, isPending, logout } = useLogout();
   const navigate = useNavigate();
   const isLogin = useRecoilValue(isLoginState);
   const resetUserData = useResetRecoilState(userDataState);
+  const loading = useRecoilValue(loadingState);
 
   const handleLogout = () => {
     logout();
@@ -19,15 +26,21 @@ const UserContent = () => {
 
   return (
     <Wrapper>
-      <TopBanner />
-      {isLogin ? (
-        <LogoutBtn onClick={handleLogout} id="btn_logout">
-          로그아웃
-        </LogoutBtn>
+      <TopBanner changeImg={changeImg} deleteImg={deleteImg} />
+      {loading ? (
+        <LoadingSpinner />
       ) : (
-        <LoginBtn type="button" onClick={() => navigate("/login")}>
-          로그인
-        </LoginBtn>
+        <>
+          {isLogin ? (
+            <LogoutBtn onClick={handleLogout} id="btn_logout">
+              로그아웃
+            </LogoutBtn>
+          ) : (
+            <LoginBtn type="button" onClick={() => navigate("/login")}>
+              로그인
+            </LoginBtn>
+          )}
+        </>
       )}
     </Wrapper>
   );

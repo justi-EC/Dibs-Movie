@@ -1,15 +1,24 @@
 import styled from "styled-components";
-import { TrendingContentType } from "../../utils/Types";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ContentType, DetailContentType } from "../../utils/Types";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Skeleton } from "antd";
+import DeleteDibsButton from "../dibs/DeleteDibsButton";
+
 interface Props {
-  content: TrendingContentType;
+  content: ContentType | DetailContentType;
 }
 
 const Content = ({ content }: Props) => {
   const [isHover, setIsHover] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const imageUrl = "https://image.tmdb.org/t/p/w500" + content.poster_path;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [content]);
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -20,21 +29,33 @@ const Content = ({ content }: Props) => {
   };
 
   return (
-    <ImgWrapper>
-      <ItemImgWrapper
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}>
-        <ItemImg src={imageUrl} alt={content.title} />
-        {isHover && (
-          <HoverContent>
-            <MovieTitle>{content.original_title}</MovieTitle>
-            <Button onClick={() => navigate(`/detail/${content.id}`)}>
-              정보 보기
-            </Button>
-          </HoverContent>
+    <>
+      <ImgWrapper>
+        <ItemImgWrapper
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => navigate(`/detail/${content.id}`)}>
+          {isLoading ? (
+            <Skeleton.Image style={{ width: "100%" }} />
+          ) : (
+            <ItemImg src={imageUrl} alt={content.title} />
+          )}
+          {isHover && (
+            <HoverContent>
+              <MovieTitle>{content.title}</MovieTitle>
+              <Button onClick={() => navigate(`/detail/${content.id}`)}>
+                정보 보기
+              </Button>
+            </HoverContent>
+          )}
+        </ItemImgWrapper>
+        {location.pathname === "/dibs" && (
+          <DeleteDibsWrapper>
+            <DeleteDibsButton contentId={content.id} />
+          </DeleteDibsWrapper>
         )}
-      </ItemImgWrapper>
-    </ImgWrapper>
+      </ImgWrapper>
+    </>
   );
 };
 
@@ -49,6 +70,7 @@ export const ItemImgWrapper = styled.div`
   position: relative;
   border-radius: 4rem;
   transition: 0.2s;
+  cursor: pointer;
   &:hover {
     transform: scale(1.05, 1.05);
   }
@@ -76,7 +98,8 @@ export const ItemImg = styled.img`
   object-fit: cover;
   border-radius: 4rem;
   transition: 0.1s;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.25),
+    0 10px 10px rgba(0, 0, 0, 0.22);
 `;
 
 const HoverContent = styled.div`
@@ -108,4 +131,10 @@ const Button = styled.button`
     background-color: ${({ theme }) => theme.colors.orange100};
     color: ${({ theme }) => theme.colors.white};
   }
+`;
+
+const DeleteDibsWrapper = styled.div`
+  display: flex;
+  padding: 1rem;
+  justify-content: center;
 `;

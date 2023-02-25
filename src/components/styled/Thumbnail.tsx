@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { TrendingContentType } from "../../utils/Types";
+import { ContentType } from "../../utils/Types";
 
 interface Props {
-  content: TrendingContentType;
+  content: ContentType;
 }
 
 const Thumbnail = ({ content }: Props) => {

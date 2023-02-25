@@ -4,14 +4,14 @@ import {
   emailErrorPatterns,
   nicknameErrorPatterns,
   passwordErrorPatterns,
-} from "../utils/check";
-import { Input } from "./styled/Input";
-import AlertLabel from "./styled/AlertLabel";
-import { Button } from "./styled/Button";
+} from "../../utils/check";
+import { Input } from "../styled/Input";
+import AlertLabel from "../styled/AlertLabel";
+import { Button } from "../styled/Button";
 import { UserData } from "./LoginForm";
-import { useSignup } from "../hooks/useSignUp";
+import { useSignup } from "../../hooks/useSignUp";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "./styled/LoadingSpinner";
+import LoadingSpinner from "../styled/LoadingSpinner";
 
 const SignUpForm = () => {
   const { error, isPending, signup } = useSignup();

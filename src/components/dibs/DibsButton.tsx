@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import { appFireStore } from "../firebase/config";
+import { appFireStore } from "../../firebase/config";
 import { useRecoilValue } from "recoil";
-import { userDataState } from "../utils/atom";
+import { userDataState } from "../../utils/atom";
 import { useState } from "react";
-import Message from "./styled/Message";
+import Message from "../styled/Message";
 
 const DibsButton = () => {
   const { uid } = useRecoilValue(userDataState);

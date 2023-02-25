@@ -1,17 +1,20 @@
-import CommonLayout from "../components/CommonLayout";
-import MainHeader from "../components/MainHeader";
 import styled, { css } from "styled-components";
 import { useDebounce } from "../hooks/useDebounce";
 import { ImCancelCircle } from "react-icons/im";
 import { useEffect, useState } from "react";
 import { getSearchMovies } from "../utils/api";
 import { IGetContentsResult } from "../utils/Types";
-import SearchMovieList from "../components/SearchMovieList";
+import SearchChangePageButton from "../components/search/SearchChangePageButton";
+import CommonLayout from "../components/main/CommonLayout";
+import MainHeader from "../components/main/MainHeader";
+import SearchMovieList from "../components/search/SearchMovieList";
+import SearchViewButton from "../components/search/SearchViewButton";
 
 const Search = () => {
   const { query, debounceQuery, setDebounceQuery } = useDebounce<string>("");
   const [searchResults, setSearchResults] = useState<IGetContentsResult>();
-  let currentPage = 1;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [viewGrid, setViewGrid] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
@@ -26,14 +29,15 @@ const Search = () => {
     handleDebounceQuery("");
   };
 
-  const handleSearchMovie = async (query: string) => {
+  const handleSearchMovie = async (query: string, page: number) => {
     const data = await getSearchMovies(query, currentPage);
     setSearchResults(data);
+    setCurrentPage(page);
   };
 
   useEffect(() => {
     if (query.length > 0) {
-      handleSearchMovie(query);
+      handleSearchMovie(query, currentPage);
     }
   }, [query]);
 
@@ -56,7 +60,16 @@ const Search = () => {
           />
         </SearchBarWrapper>
         {debounceQuery && searchResults && (
-          <SearchMovieList searchMovies={searchResults} />
+          <>
+            <SearchMovieList searchMovies={searchResults} viewGrid={viewGrid} />
+            <SearchViewButton setViewGrid={setViewGrid} />
+            <SearchChangePageButton
+              currentPage={currentPage}
+              searchResults={searchResults}
+              handleSearchMovie={handleSearchMovie}
+              query={query}
+            />
+          </>
         )}
       </Wrapper>
     </CommonLayout>

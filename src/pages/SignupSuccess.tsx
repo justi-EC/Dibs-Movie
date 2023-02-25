@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { LoginBtn } from "../components/MainHeader";
 import { H2, MainWrapper, Wrapper } from "./Login";
 import styled from "styled-components";
+import { LoginBtn } from "../components/main/MainHeader";
 
 const SignupSuccess = () => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const SignupSuccess = () => {
       <SuccessMainWrapper>
         <H2>회원가입이 완료되었습니다!</H2>
         <SuccessLoginBtn onClick={() => navigate("/")}>
-          영화 탐색하러가기 TODO:
+          메인페이지로 이동
         </SuccessLoginBtn>
       </SuccessMainWrapper>
     </SuccessWrapper>

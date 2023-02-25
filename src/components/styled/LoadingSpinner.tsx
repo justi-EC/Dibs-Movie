@@ -1,18 +1,34 @@
 import styled from "styled-components";
 
 const LoadingSpinner = () => {
-  return <Spinner />;
+  return (
+    <SpinnerContainer>
+      <Spinner />
+    </SpinnerContainer>
+  );
 };
 
 export default LoadingSpinner;
 
-export const Spinner = styled.div`
+const SpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4rem;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin-left: 5rem;
+`;
+
+export const Spinner = styled.div`
+  width: 64px;
+  height: 64px;
+  margin: auto;
 
   &:after {
     content: " ";
@@ -22,7 +38,8 @@ export const Spinner = styled.div`
     margin: 8px;
     border-radius: 50%;
     border: 6px solid teal;
-    border-color: black transparent black transparent;
+    border-color: ${({ theme }) => theme.colors.gray100} transparent
+      ${({ theme }) => theme.colors.gray100} transparent;
     animation: spinner 1.2s linear infinite;
   }
 

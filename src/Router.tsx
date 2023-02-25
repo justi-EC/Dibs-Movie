@@ -2,32 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
-import { useSetRecoilState } from "recoil";
-import { useEffect } from "react";
-import { appAuth } from "./firebase/config";
-import { isLoginState, userDataState } from "./utils/atom";
 import MyPage from "./pages/MyPage";
 import SignupSuccess from "./pages/SignupSuccess";
 import Dibs from "./pages/Dibs";
 import ContentDetail from "./pages/ContentDetail";
 import Search from "./pages/Search";
+import ViewAllPage from "./pages/ViewAllPage";
 
 const Router = () => {
-  const setIsLogin = useSetRecoilState(isLoginState);
-  const setUserData = useSetRecoilState(userDataState);
-  useEffect(() => {
-    appAuth.onAuthStateChanged((user) => {
-      setIsLogin(user !== null);
-      if (user) {
-        setUserData({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-        });
-      }
-    });
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -39,6 +21,7 @@ const Router = () => {
         <Route path="/detail/:id" element={<ContentDetail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dibs" element={<Dibs />} />
+        <Route path="/viewall/*" element={<ViewAllPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { appAuth, appFireStore } from "../firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
-import { UserData } from "../components/LoginForm";
 import { useNavigate } from "react-router-dom";
+import { UserData } from "../components/login/LoginForm";
 
 export const useSignup = () => {
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,6 @@ export const useSignup = () => {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
-        dibsIdList: [],
       });
       navigate("/signupsuccess");
       setError(null);

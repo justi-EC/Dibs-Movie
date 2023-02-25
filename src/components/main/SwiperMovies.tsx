@@ -1,51 +1,58 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper";
-import { TrendingContentType, IGetContentsResult } from "../utils/Types";
-import Content from "./styled/Content";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { trendingMovieDataState } from "../utils/atom";
-import { getTrendingContents } from "../utils/api";
+import { ContentType, Title } from "../../utils/Types";
+import Content from "../styled/Content";
 
-const TrendMovies = () => {
-  const [trendingMovieData, setTrendingMovieData] = useRecoilState(
-    trendingMovieDataState
-  );
+interface Props {
+  data?: ContentType[];
+  title: string;
+}
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const data: IGetContentsResult = await getTrendingContents();
-        const results: TrendingContentType[] = data.results;
-        setTrendingMovieData(results);
-      } catch (error) {
-        console.error(error);
+const SwiperMovies = ({ data, title }: Props) => {
+  const navigate = useNavigate();
+
+  const viewAllHandler = () => {
+    let path;
+    switch (title) {
+      case Title.TRENDING: {
+        path = "/viewall/trending";
+        break;
       }
-    };
-    loadData();
-  }, []);
+      case Title.UPCOMING: {
+        path = "/viewall/upcoming";
+        break;
+      }
+      case Title.TOPRATED: {
+        path = "/viewall/toprated";
+        break;
+      }
+      default: {
+        path = "/";
+        break;
+      }
+    }
+    navigate(path);
+  };
 
   {
     return (
       <section>
         <Header>
-          <Title>요즘 영화 트렌드</Title>
-          <MainLink to="">전체보기</MainLink> {/* TODO: */}
+          <SectionTitle>{title}</SectionTitle>
+          <ViewAllBtn onClick={viewAllHandler}>전체보기</ViewAllBtn>
         </Header>
         <GridItem>
           <Swiper
             modules={[Pagination, Autoplay]}
             slidesPerView={4}
             pagination={{ clickable: true }}
-            autoplay={{ delay: 3000 }}>
-            {trendingMovieData &&
-              trendingMovieData.map((content: TrendingContentType) => {
+            autoplay={{ delay: 10000 }}>
+            {data &&
+              data.map((content: ContentType) => {
                 return (
                   <SwiperSlide key={content.id}>
                     <Content content={content} />
@@ -59,23 +66,23 @@ const TrendMovies = () => {
   }
 };
 
-export default TrendMovies;
+export default SwiperMovies;
 
 const Header = styled.header`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin: 0 4rem;
+  margin: 0 6rem;
   padding-top: 6rem;
   padding-bottom: 1.4rem;
 `;
 
-const Title = styled.h3`
+const SectionTitle = styled.h3`
   ${({ theme }) => theme.fonts.header3}
   color: ${({ theme }) => theme.colors.gray100};
 `;
 
-const MainLink = styled(Link)`
+const ViewAllBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;

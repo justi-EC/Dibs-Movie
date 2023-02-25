@@ -1,14 +1,7 @@
-import { recoilPersist } from "recoil-persist";
-import {
-  DibsContentStateType,
-  TrendingContentType,
-  UserDataType,
-} from "./Types";
+import { UserDataType } from "./Types";
 import { atom } from "recoil";
 
-const { persistAtom } = recoilPersist();
-
-export const isLoginState = atom<boolean>({
+export const isLoginState = atom({
   key: "isLoginState",
   default: false,
 });
@@ -22,17 +15,12 @@ export const userDataState = atom<UserDataType>({
   },
 });
 
-export const trendingMovieDataState = atom<TrendingContentType[]>({
-  key: "trendingMovieDataState",
-  default: [],
-  effects_UNSTABLE: [persistAtom],
+export const loadingState = atom({
+  key: "loadingState",
+  default: false,
 });
 
-export const dibsContentState = atom<DibsContentStateType>({
-  key: "dibsContentState",
-  default: {
-    isPending: false,
-    success: false,
-    error: null,
-  },
+export const attachmentState = atom<string | null>({
+  key: "attachmentState",
+  default: null,
 });

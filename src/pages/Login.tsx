@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import LoginForm from "../components/LoginForm";
+import { useNavigate } from "react-router-dom";
+import LoginForm from "../components/login/LoginForm";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Wrapper>
@@ -14,8 +17,9 @@ const Login = () => {
               영화 관련 정보를 담아보세요!
             </H3>
             <LoginForm />
-            <StContact>이메일/비밀번호를 잊어버리셨다면?</StContact>{" "}
-            {/* TODO: */}
+            <StContact onClick={() => navigate("/signup")}>
+              회원가입 하러 가기
+            </StContact>
           </Article>
         </MainWrapper>
       </Wrapper>

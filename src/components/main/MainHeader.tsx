@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Button } from "./styled/Button";
-import { isLoginState } from "../utils/atom";
+import { isLoginState, loadingState } from "../../utils/atom";
+import LoadingSpinner from "../styled/LoadingSpinner";
+import { Button } from "../styled/Button";
 
 interface Props {
   children: React.ReactNode;
@@ -13,21 +14,28 @@ const MainHeader = ({ children }: Props) => {
   const isLogin = useRecoilValue(isLoginState);
   const location = useLocation();
   const isMyPage = location.pathname === "/";
+  const loading = useRecoilValue(loadingState);
 
   return (
     <Header>
       <Head>{children}</Head>
-      {isLogin ? (
-        <></>
+      {loading ? (
+        <LoadingSpinner />
       ) : (
         <>
-          {isMyPage && (
-            <BtnWrapper>
-              <LoginBtn onClick={() => navigate("/login")}>로그인</LoginBtn>
-              <SignupBtn type="button" onClick={() => navigate("/signup")}>
-                회원가입
-              </SignupBtn>
-            </BtnWrapper>
+          {isLogin ? (
+            <></>
+          ) : (
+            <>
+              {isMyPage && (
+                <BtnWrapper>
+                  <LoginBtn onClick={() => navigate("/login")}>로그인</LoginBtn>
+                  <SignupBtn type="button" onClick={() => navigate("/signup")}>
+                    회원가입
+                  </SignupBtn>
+                </BtnWrapper>
+              )}
+            </>
           )}
         </>
       )}

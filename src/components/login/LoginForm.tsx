@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { Button } from "./styled/Button";
-import { Input } from "./styled/Input";
-import AlertLabel from "./styled/AlertLabel";
-import { emailErrorPatterns, passwordErrorPatterns } from "../utils/check";
-import { useLogin } from "../hooks/useLogin";
+import { isLoginState } from "../../utils/atom";
+import { useLogin } from "../../hooks/useLogin";
+import { Input } from "../styled/Input";
+import { emailErrorPatterns, passwordErrorPatterns } from "../../utils/check";
+import AlertLabel from "../styled/AlertLabel";
+import { Button } from "../styled/Button";
+import { Spinner } from "../styled/LoadingSpinner";
 import { useRecoilValue } from "recoil";
-import { isLoginState } from "../utils/atom";
-import LoadingSpinner from "./styled/LoadingSpinner";
-import { useEffect } from "react";
 
 export interface UserData {
   [x: string]: string;
@@ -105,3 +105,5 @@ const LoginBtn = styled(Button)<{ disabled: boolean }>`
       }
     `}
 `;
+
+const LoadingSpinner = styled(Spinner)``;

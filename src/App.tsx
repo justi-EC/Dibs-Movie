@@ -1,18 +1,29 @@
-import { RecoilRoot } from "recoil";
 import Router from "./Router";
-import GlobalStyle from "./styles/globalStyle";
-import { ThemeProvider } from "styled-components";
-import theme from "./styles/theme";
+import { useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { appAuth, appFireStore } from "./firebase/config";
+import { isLoginState, userDataState } from "./utils/atom";
+import useLoading from "./hooks/useLoading";
+import { doc, getDoc } from "firebase/firestore";
 
 function App() {
-  return (
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Router />
-      </ThemeProvider>
-    </RecoilRoot>
-  );
+  const setIsLogin = useSetRecoilState(isLoginState);
+  const setUserData = useSetRecoilState(userDataState);
+  const { showLoading, hideLoading } = useLoading();
+
+  useEffect(() => {
+    showLoading();
+    appAuth.onAuthStateChanged(async (user) => {
+      setIsLogin(user !== null);
+      if (user) {
+        const { uid, email, displayName } = user;
+        setUserData({ uid, email, displayName });
+      }
+      hideLoading();
+    });
+  }, []);
+
+  return <Router />;
 }
 
 export default App;

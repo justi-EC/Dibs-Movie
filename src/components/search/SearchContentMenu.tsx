@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { TrendingContentType } from "../../utils/Types";
-import Thumbnail from "./Thumbnail";
 import { useNavigate } from "react-router-dom";
+import Thumbnail from "../styled/Thumbnail";
+import { ContentType } from "../../utils/Types";
 
 interface Props {
-  content: TrendingContentType;
+  content: ContentType;
 }
-const SearchContent = ({ content }: Props) => {
+const SearchContentMenu = ({ content }: Props) => {
   const navigate = useNavigate();
   const percent = Math.round(content.vote_average * 10);
 
@@ -28,7 +28,7 @@ const SearchContent = ({ content }: Props) => {
   );
 };
 
-export default SearchContent;
+export default SearchContentMenu;
 
 const Article = styled.article`
   display: flex;

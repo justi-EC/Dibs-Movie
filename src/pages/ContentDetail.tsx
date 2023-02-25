@@ -4,14 +4,14 @@ import { ImgWrapper, ItemImg } from "../components/styled/Content";
 import styled from "styled-components";
 import { Article, H2, H3 } from "./Login";
 import { MainWrapper } from "./Login";
-import CommonLayout from "../components/CommonLayout";
-import MainHeader from "../components/MainHeader";
 import { Progress } from "antd";
 import { useEffect, useState } from "react";
 import { getDetailContents } from "../utils/api";
 import { FaExternalLinkAlt, FaImdb } from "react-icons/fa";
-import { Spinner } from "../components/styled/LoadingSpinner";
-import DibsButton from "../components/DibsButton";
+import LoadingSpinner from "../components/styled/LoadingSpinner";
+import DibsButton from "../components/dibs/DibsButton";
+import CommonLayout from "../components/main/CommonLayout";
+import MainHeader from "../components/main/MainHeader";
 
 const ContentDetail = () => {
   const { id } = useParams();
@@ -30,7 +30,11 @@ const ContentDetail = () => {
   }, []);
 
   if (!results) {
-    return <LoadingSpinner />;
+    return (
+      <CommonLayout>
+        <LoadingSpinner />
+      </CommonLayout>
+    );
   }
 
   const statusColor = () => {
@@ -40,7 +44,7 @@ const ContentDetail = () => {
       case "Planned":
         return "teal";
       case "In Production":
-        return "blue";
+        return "darkblue";
       case "Post Production":
         return "purple";
       case "Released":
@@ -130,9 +134,9 @@ const ReleaseBtn = styled.button<{ color?: StatusColorType }>`
   margin-left: 2rem;
   ${({ theme }) => theme.fonts.body2};
   color: ${({ color }) => color};
-  border: 0.3rem solid ${({ theme }) => theme.colors.green100};
+  border: 0.3rem solid ${({ color }) => color};
   padding: 0.2rem;
-  width: 8rem;
+  width: 12rem;
   cursor: default;
 `;
 
@@ -164,18 +168,4 @@ const SiteBtn = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.orange100};
   }
-`;
-
-const DibsBtn = styled.button`
-  margin: 2rem;
-  padding: 1rem;
-  width: 100%;
-  border-radius: 1.3rem;
-  ${({ theme }) => theme.fonts.h1};
-  background-color: ${({ theme }) => theme.colors.red100};
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const LoadingSpinner = styled(Spinner)`
-  margin-top: 22rem;
 `;

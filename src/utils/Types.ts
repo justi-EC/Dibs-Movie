@@ -8,7 +8,7 @@ interface ICompany {
   logo_path: string;
   name: string;
 }
-export interface TrendingContentType {
+export interface ContentType {
   id: number;
   title: string;
   original_title: string;
@@ -48,7 +48,7 @@ export interface DetailContentType {
 
 export interface IGetContentsResult {
   page: number;
-  results: TrendingContentType[];
+  results: ContentType[];
   total_pages: number;
   total_results: number;
 }
@@ -78,7 +78,7 @@ export interface DibsContentStateType {
   error: string | null;
 }
 export interface StatusColorType {
-  color?: "orange" | "teal" | "blue" | "purple" | "green" | "red";
+  color?: "orange" | "teal" | "darkblue" | "purple" | "green" | "red";
 }
 
 export interface ISearchResultList {
@@ -94,4 +94,25 @@ interface ISearchResult {
   release_date: string;
   vote_average: number;
   vote_count: number;
+}
+
+export interface IVideos {
+  id: string;
+  key: string;
+  name: string;
+  site: "YouTube";
+  size: string;
+  type: string;
+  official: boolean;
+}
+
+export interface IGetVideos {
+  id: number;
+  results: IVideos[];
+}
+
+export enum Title {
+  TRENDING = "요즘 영화 트랜드",
+  UPCOMING = "개봉 예정 영화",
+  TOPRATED = "최고 평점",
 }
