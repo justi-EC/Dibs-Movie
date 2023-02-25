@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { appAuth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { UserData } from "../components/LoginForm";
 import { useSetRecoilState } from "recoil";
 import { isLoginState } from "../utils/atom";
+import { UserData } from "../components/login/LoginForm";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
