@@ -6,7 +6,7 @@
 </div>
 </br>
 
-사용 API : themoviedb
+사용 API : The Movie Database (TMDb)
 
 1.메인화면
 ![5](https://user-images.githubusercontent.com/108607378/221349690-df22ac71-9a7a-44a0-9732-c02caa224b0c.png)
