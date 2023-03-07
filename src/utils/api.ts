@@ -1,8 +1,9 @@
-import axios from "axios";
-import { setCookie } from "./cookie";
+import axios from 'axios';
+import { setCookie } from './cookie';
 
-const MOVIE_API_KEY = "d91258d3e6acc08cc4747ef8defa73c0";
-const MOVIE_BASE_FETCH = "https://api.themoviedb.org/3";
+const { VITE_MOVIES_API_KEY } = import.meta.env;
+const MOVIE_API_KEY = VITE_MOVIES_API_KEY;
+const MOVIE_BASE_FETCH = 'https://api.themoviedb.org/3';
 
 export interface Endpoints {
   trending: string;
@@ -12,9 +13,9 @@ export interface Endpoints {
 
 export const getMovies = async (type: keyof Endpoints) => {
   const endpoints: Endpoints = {
-    trending: "/trending/movie/week",
-    upcoming: "/movie/upcoming",
-    toprated: "/movie/top_rated",
+    trending: '/trending/movie/week',
+    upcoming: '/movie/upcoming',
+    toprated: '/movie/top_rated',
   };
   const endpoint = endpoints[type];
   const url = `${MOVIE_BASE_FETCH}${endpoint}?api_key=${MOVIE_API_KEY}`;
@@ -25,7 +26,7 @@ export const getMovies = async (type: keyof Endpoints) => {
 
 export const getDetailContents = async (movieId: string) => {
   const response = await axios.get(
-    `${MOVIE_BASE_FETCH}/movie/${movieId}?api_key=${MOVIE_API_KEY}`
+    `${MOVIE_BASE_FETCH}/movie/${movieId}?api_key=${MOVIE_API_KEY}`,
   );
   return response.data;
 };
@@ -43,13 +44,13 @@ export const getSearchMovies = async (query: string, page: number) => {
 
 export const getContentVideos = async (contentId: number) => {
   const contentVideo = fetch(
-    `${MOVIE_BASE_FETCH}/movie/${contentId}/videos?api_key=${MOVIE_API_KEY}`
+    `${MOVIE_BASE_FETCH}/movie/${contentId}/videos?api_key=${MOVIE_API_KEY}`,
   ).then((response) => response.json());
   if (contentVideo as any) {
-    setCookie("safeCookie1", "foo", {
-      path: "/",
+    setCookie('safeCookie1', 'foo', {
+      path: '/',
       secure: true,
-      sameSite: "None",
+      sameSite: 'None',
     });
   }
   return contentVideo;
