@@ -46,7 +46,7 @@ export default Banner;
 
 const Wrapper = styled.section`
   position: relative;
-  height: 30rem;
+  height: 35em;
   margin: 0 4rem;
   border-radius: 2rem;
   background-color: ${({ theme }) => theme.colors.white200};
